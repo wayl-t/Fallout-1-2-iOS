@@ -17,7 +17,7 @@ static int pickGame() {
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
       if (e.type == SDL_QUIT) choice = 1;
-      if (e.type == SDL_MOUSEBUTTONDOWN) choice = (e.button.y < 240) ? 1 : 2;
+      if (e.type == SDL_MOUSEBUTTONDOWN) { int wh = 480; SDL_GetWindowSize(w, nullptr, &wh); choice = (e.button.y < wh / 2) ? 1 : 2; }
       if (e.type == SDL_FINGERDOWN) choice = (e.tfinger.y < 0.5f) ? 1 : 2;
     }
     if (r) { int width = 0; int height = 0; SDL_GetWindowSize(w, &width, &height); SDL_SetRenderDrawColor(r, 20, 16, 10, 255); SDL_RenderClear(r); SDL_SetRenderDrawColor(r, 190, 130, 40, 255); SDL_Rect top = {40, 40, width - 80, height / 2 - 60}; SDL_RenderFillRect(r, &top); SDL_SetRenderDrawColor(r, 90, 110, 60, 255); SDL_Rect bottom = {40, height / 2 + 20, width - 80, height / 2 - 60}; SDL_RenderFillRect(r, &bottom); SDL_RenderPresent(r); }
@@ -32,10 +32,13 @@ int main(int argc, char** argv) {
   (void)argc; (void)argv;
   SDL_SetHint(SDL_HINT_MOUSE_TOUCH_EVENTS, "0");
   SDL_SetHint(SDL_HINT_TOUCH_MOUSE_EVENTS, "0");
-  int choice = pickGame();
   std::string docs = iOSGetDocumentsPath();
-  std::string dir = docs + std::string(choice == 2 ? "/Fallout2" : "/Fallout1");
-  mkdir(dir.c_str(), 0755);
+  std::string dir1 = docs + "/Fallout1";
+  std::string dir2 = docs + "/Fallout2";
+  mkdir(dir1.c_str(), 0755);
+  mkdir(dir2.c_str(), 0755);
+  int choice = pickGame();
+  std::string dir = choice == 2 ? dir2 : dir1;
   chdir(dir.c_str());
   char prog[16] = "Fallout";
   char* args[2] = {prog, nullptr};
