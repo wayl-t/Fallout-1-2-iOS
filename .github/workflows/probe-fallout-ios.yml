@@ -17,13 +17,13 @@ jobs:
       - name: Build Fallout 1
         working-directory: fallout1-ce
         run: |
-          cmake -B build -D CMAKE_BUILD_TYPE=RelWithDebInfo -D CMAKE_TOOLCHAIN_FILE=cmake/toolchain/ios.toolchain.cmake -D ENABLE_BITCODE=0 -D PLATFORM=OS64 -G Xcode -D CMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY=''
+          cmake -B build -D CMAKE_BUILD_TYPE=RelWithDebInfo -D CMAKE_TOOLCHAIN_FILE=cmake/toolchain/ios.toolchain.cmake -D ENABLE_BITCODE=0 -D PLATFORM=OS64 -G Xcode -D CMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY='' -D CMAKE_POLICY_VERSION_MINIMUM=3.5
           cmake --build build --config RelWithDebInfo -j $(sysctl -n hw.physicalcpu)
           cd build && cpack -C RelWithDebInfo
       - name: Build Fallout 2
         working-directory: fallout2-ce
         run: |
-          cmake --preset ios
+          cmake --preset ios -D CMAKE_POLICY_VERSION_MINIMUM=3.5
           cmake --build --preset ios-release
           cd out/build/ios && cpack -C RelWithDebInfo
       - name: Upload IPAs
@@ -34,3 +34,4 @@ jobs:
             fallout1-ce/build/fallout-ce.ipa
             fallout2-ce/out/build/ios/fallout2-ce.ipa
           retention-days: 7
+
