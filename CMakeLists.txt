@@ -249,7 +249,7 @@ add_library(fallout2 STATIC
   ${F2_DIR}/src/touch.cc
 )
 target_include_directories(fallout2 PUBLIC ${F2_DIR}/src)
-target_compile_definitions(fallout2 PUBLIC fallout=fallout2)
+target_compile_definitions(fallout2 PRIVATE fallout=fallout2)
 target_link_libraries(fallout2 PUBLIC SDL2-static SDL2::SDL2main fpattern::fpattern)
 target_include_directories(fallout2 PUBLIC ${SDL2_INCLUDE_DIRS} ${ZLIB_INCLUDE_DIRS})
 if(TARGET zlibstatic)

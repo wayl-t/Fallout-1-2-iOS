@@ -5,6 +5,7 @@
 const char* iOSGetDocumentsPath();
 namespace fallout { int gnw_main(int argc, char** argv); }
 namespace fallout2 { int falloutMain(int argc, char** argv); }
+namespace fallout2 { bool gProgramIsActive = false; }
 static int pickGame() {
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) return 1;
   SDL_Window* w = SDL_CreateWindow("Fallout", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_FULLSCREEN | SDL_WINDOW_ALLOW_HIGHDPI);
