@@ -15,11 +15,13 @@ for root in roots:
         text = mouse_path.read_text(encoding='utf-8', errors='ignore')
         if 'kTap' not in text:
             continue
-        if '_mouse_simulate_input' in text:
+        tap_start = text.find('case kTap:')
+        tap_block = text[tap_start:tap_start+600] if tap_start != -1 else ''
+        if '_mouse_simulate_input(0, 0,' in tap_block:
             fn = '_mouse_simulate_input'
-        elif 'mouse_simulate_input' in text:
+        elif 'mouse_simulate_input(0, 0,' in tap_block:
             fn = 'mouse_simulate_input'
-        elif 'mouseSimulateInput' in text:
+        elif 'mouseSimulateInput(0, 0,' in tap_block:
             fn = 'mouseSimulateInput'
         else:
             fn = None
