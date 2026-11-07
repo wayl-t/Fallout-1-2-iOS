@@ -15,12 +15,28 @@ for root in roots:
         text = mouse_path.read_text(encoding='utf-8', errors='ignore')
         if 'kTap' not in text:
             continue
-        fn = 'mouse_simulate_input' if 'mouse_simulate_input' in text else 'mouseSimulateInput' if 'mouseSimulateInput' in text else None
-        if fn is None or 'mouse_x' not in text or 'mouse_y' not in text:
+        if '_mouse_simulate_input' in text:
+            fn = '_mouse_simulate_input'
+        elif 'mouse_simulate_input' in text:
+            fn = 'mouse_simulate_input'
+        elif 'mouseSimulateInput' in text:
+            fn = 'mouseSimulateInput'
+        else:
+            fn = None
+        if 'gMouseCursorX' in text and 'gMouseCursorY' in text:
+            cur_x = 'gMouseCursorX'
+            cur_y = 'gMouseCursorY'
+        elif 'mouse_x' in text and 'mouse_y' in text:
+            cur_x = 'mouse_x'
+            cur_y = 'mouse_y'
+        else:
+            cur_x = None
+            cur_y = None
+        if fn is None or cur_x is None:
             print('skip, simulate fn or cursor vars not found:', mouse_path)
             continue
-        new = text.replace(fn + '(0, 0, MOUSE_STATE_LEFT_BUTTON_DOWN)', fn + '(gesture.x - mouse_x, gesture.y - mouse_y, MOUSE_STATE_LEFT_BUTTON_DOWN)')
-        new = new.replace(fn + '(0, 0, MOUSE_STATE_RIGHT_BUTTON_DOWN)', fn + '(gesture.x - mouse_x, gesture.y - mouse_y, MOUSE_STATE_RIGHT_BUTTON_DOWN)')
+        new = text.replace(fn + '(0, 0, MOUSE_STATE_LEFT_BUTTON_DOWN)', fn + '(gesture.x - ' + cur_x + ', gesture.y - ' + cur_y + ', MOUSE_STATE_LEFT_BUTTON_DOWN)')
+        new = new.replace(fn + '(0, 0, MOUSE_STATE_RIGHT_BUTTON_DOWN)', fn + '(gesture.x - ' + cur_x + ', gesture.y - ' + cur_y + ', MOUSE_STATE_RIGHT_BUTTON_DOWN)')
         lines = new.splitlines()
         out = []
         i = 0
@@ -29,7 +45,7 @@ for root in roots:
             if 'prevx = gesture.x;' in lines[i] and i + 1 < len(lines) and 'prevy = gesture.y;' in lines[i + 1]:
                 out.append(lines[i + 1])
                 indent = lines[i + 1][:len(lines[i + 1]) - len(lines[i + 1].lstrip())]
-                out.append(indent + fn + '(gesture.x - mouse_x, gesture.y - mouse_y, 0);')
+                out.append(indent + fn + '(gesture.x - ' + cur_x + ', gesture.y - ' + cur_y + ', 0);')
                 i += 2
                 continue
             i += 1
@@ -41,3 +57,5 @@ for root in roots:
 print('tap fixed in:', tap_fixed)
 if not any('fallout1-ce' in p for p in tap_fixed):
     sys.exit('ERROR: Fallout 1 tap fix did not apply')
+if not any('fallout2-ce' in p for p in tap_fixed):
+    sys.exit('ERROR: Fallout 2 tap fix did not apply')
