@@ -34,10 +34,6 @@ jobs:
         run: python patches/add_crash_backtrace.py
       - name: Fix combat crash guards
         run: python patches/fix_combat_crash.py
-        run: python patches/fix_side_include.py
-      - name: Fix side texture placement
-        run: python patches/fix_side_texture.py
-      - name: Fullscreen stretch, no side buttons
         run: python patches/fullscreen_no_side.py
       - name: Configure launcher (iOS)
         run: |
