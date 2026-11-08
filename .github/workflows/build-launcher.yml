@@ -26,7 +26,7 @@ jobs:
         run: python patches/fix_menu_buttons.py
       - name: Add engine logging for fonts and databases
         run: python patches/add_engine_logging.py
-      - name: Fix controls: debug log, buttons, camera stick
+      - name: 'Fix controls: debug log, buttons, camera stick'
         run: python patches/fix_controls.py
       - name: Configure launcher (iOS)
         run: |
