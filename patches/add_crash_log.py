@@ -46,8 +46,9 @@ insert_after(f1, "atexit(debug_exit);", ["    signal(SIGSEGV, crash_handler);", 
 insert_after(f2, "atexit(_debug_exit);", ["    signal(SIGSEGV, crash_handler);", "    signal(SIGABRT, crash_handler);", "    signal(SIGBUS, crash_handler);", "    signal(SIGILL, crash_handler);"], "f2 install")
 insert_after(f1, "fd = compat_fopen(fileName, mode);", ["    setvbuf(fd, NULL, _IONBF, 0);"], "f1 unbuffered")
 insert_after(f2, "_fd = compat_fopen(fileName, mode);", ["    setvbuf(_fd, nullptr, _IONBF, 0);"], "f2 unbuffered")
-insert_after("work/fallout1-ce/src/game/map.cc", "int map_load(char* file_name)", ["    { FILE* _c = fopen(" + q + "crash.log" + q + ", " + q + "a" + q + "); if (_c) { fprintf(_c, " + q + "map_load %s" + chr(92) + "n" + q + ", file_name); fclose(_c); } }"], "f1 map log")
-insert_after("work/fallout2-ce/src/map.cc", "int mapLoadByName(char* fileName)", ["    { FILE* _c = fopen(" + q + "crash.log" + q + ", " + q + "a" + q + "); if (_c) { fprintf(_c, " + q + "map_load %s" + chr(92) + "n" + q + ", fileName); fclose(_c); } }"], "f2 map log")
+insert_after("work/fallout1-ce/src/game/map.cc", "    compat_strupr(file_name);", ["    { FILE* _c = fopen(" + q + "crash.log" + q + ", " + q + "a" + q + "); if (_c) { fprintf(_c, " + q + "map_load %s" + chr(92) + "n" + q + ", file_name); fclose(_c); } }"], "f1 map log")
+insert_after("work/fallout2-ce/src/map.cc", "    compat_strupr(fileName);", ["    { FILE* _c = fopen(" + q + "crash.log" + q + ", " + q + "a" + q + "); if (_c) { fprintf(_c, " + q + "map_load %s" + chr(92) + "n" + q + ", fileName); fclose(_c); } }"], "f2 map log")
 if not ok:
     sys.exit("ERROR add_crash_log did not fully apply")
 print("add_crash_log done")
+
