@@ -22,6 +22,8 @@ jobs:
         run: python patches/fix_touch.py
       - name: Add touch logging to both engines
         run: python patches/add_logging.py
+      - name: Fix menu buttons for touch
+        run: python patches/fix_menu_buttons.py
       - name: Configure launcher (iOS)
         run: |
           cmake -B build -D CMAKE_BUILD_TYPE=RelWithDebInfo -D CMAKE_TOOLCHAIN_FILE=work/fallout1-ce/cmake/toolchain/ios.toolchain.cmake -D ENABLE_BITCODE=0 -D PLATFORM=OS64 -G Xcode -D CMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY='' -D CMAKE_POLICY_VERSION_MINIMUM=3.5
