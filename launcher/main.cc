@@ -19,7 +19,15 @@ static void launcherLog(const char* fmt, ...) {
   fflush(gLauncherLog);
 }
 static SDL_Texture* loadBg(SDL_Renderer* r, const char* name) { std::string base = SDL_GetBasePath() ? SDL_GetBasePath() : ""; std::string p = base + name; SDL_Surface* sf = SDL_LoadBMP(p.c_str()); if (!sf) { launcherLog("bg load failed %s: %s", p.c_str(), SDL_GetError()); return nullptr; } SDL_Texture* tx = SDL_CreateTextureFromSurface(r, sf); SDL_FreeSurface(sf); launcherLog("bg loaded %s", p.c_str()); return tx; }
-static void drawBtn(SDL_Renderer* r, SDL_Rect b, bool first) { SDL_SetRenderDrawColor(r, 0, 0, 0, 150); SDL_RenderFillRect(r, &b); SDL_SetRenderDrawColor(r, first ? 255 : 120, first ? 176 : 200, first ? 46 : 235, 255); for (int i = 0; i < 4; i++) { SDL_Rect f = { b.x + i, b.y + i, b.w - 2 * i, b.h - 2 * i }; SDL_RenderDrawRect(r, &f); } SDL_SetRenderDrawColor(r, first ? 255 : 120, first ? 176 : 200, first ? 46 : 235, 255); int cx = b.x + b.w / 2; int cy = b.y + b.h / 2; SDL_Rect dot = { cx - 14, cy - 14, 28, 28 }; SDL_RenderFillRect(r, &dot); }
+static void drawBtn(SDL_Renderer* r, SDL_Rect b, bool first) {
+  SDL_SetRenderDrawColor(r, 58, 54, 44, 255); SDL_RenderFillRect(r, &b);
+  SDL_SetRenderDrawColor(r, 210, 190, 150, 255); SDL_Rect hi = {b.x, b.y, b.w, 3}; SDL_RenderFillRect(r, &hi);
+  SDL_SetRenderDrawColor(r, 20, 18, 14, 255); SDL_Rect lo = {b.x, b.y + b.h - 3, b.w, 3}; SDL_RenderFillRect(r, &lo);
+  SDL_SetRenderDrawColor(r, first ? 255 : 120, first ? 176 : 200, first ? 46 : 235, 255); for (int i = 0; i < 3; i++) { SDL_Rect f = {b.x + i, b.y + i, b.w - 2 * i, b.h - 2 * i}; SDL_RenderDrawRect(r, &f); }
+  SDL_SetRenderDrawColor(r, 200, 30, 30, 255); SDL_Rect lamp = {b.x + 18, b.y + b.h / 2 - 11, 22, 22}; SDL_RenderFillRect(r, &lamp);
+  SDL_SetRenderDrawColor(r, 255, 120, 110, 255); SDL_Rect lampHi = {b.x + 18, b.y + b.h / 2 - 11, 22, 4}; SDL_RenderFillRect(r, &lampHi);
+  SDL_SetRenderDrawColor(r, 180, 170, 140, 255); SDL_Rect q1 = {b.x + 6, b.y + 6, 6, 6}; SDL_RenderFillRect(r, &q1); SDL_Rect q2 = {b.x + b.w - 12, b.y + 6, 6, 6}; SDL_RenderFillRect(r, &q2); SDL_Rect q3 = {b.x + 6, b.y + b.h - 12, 6, 6}; SDL_RenderFillRect(r, &q3); SDL_Rect q4 = {b.x + b.w - 12, b.y + b.h - 12, 6, 6}; SDL_RenderFillRect(r, &q4);
+}
 static int pickGame() {
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) { launcherLog("pickGame SDL_Init failed: %s", SDL_GetError()); return 1; }
   SDL_Window* w = SDL_CreateWindow("Fallout", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_FULLSCREEN | SDL_WINDOW_ALLOW_HIGHDPI);
