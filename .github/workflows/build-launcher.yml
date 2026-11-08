@@ -38,6 +38,8 @@ jobs:
         run: python patches/add_side_buttons.py
       - name: Update side buttons v2
         run: python patches/update_side_buttons_v2.py
+      - name: Fix side button type include
+        run: python patches/fix_side_include.py
       - name: Configure launcher (iOS)
         run: |
           cmake -B build -D CMAKE_BUILD_TYPE=RelWithDebInfo -D CMAKE_TOOLCHAIN_FILE=work/fallout1-ce/cmake/toolchain/ios.toolchain.cmake -D ENABLE_BITCODE=0 -D PLATFORM=OS64 -G Xcode -D CMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY='' -D CMAKE_POLICY_VERSION_MINIMUM=3.5
